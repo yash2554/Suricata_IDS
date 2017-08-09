@@ -1,0 +1,15 @@
+apt-get update
+apt-get install libpcre3-dbg libpcre3-dev autoconf automake libtool libpcap-dev libnet1-dev libyaml-dev zlib1g-dev libcap-ng-dev libmagic-dev libjansson-dev libjansson4
+apt-get install libnetfilter-queue-dev libnetfilter-queue1 libnfnetlink-dev
+
+wget https://www.openinfosecfoundation.org/download/suricata-4.0.0.tar.gz
+tar -zxf suricata-4.0.0.tar.gz
+cd suricata-4.0.0/
+./configure --enable-nfqueue --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+make && make install-conf
+make install-rules
+ls /etc/suricata/rules
+vim /etc/suricata/suricata.yaml
+ethtool -K eth0 gro off lro off
+/usr/bin/suricata --list-runmodes
+/usr/bin/suricata -c /etc/suricata/suricata.yaml -i eth0 --init-errors-fatal
